@@ -15,7 +15,7 @@ function CustomDrawerContent({ navigation }) {
       </View>
       <View style={[styles.optionsContainer, { marginTop: 15 }]}>
         <AntDesign name="pluscircle" size={26} color="#ddd" />
-        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+        <TouchableOpacity onPress={() => navigation.navigate("AddPizza")}>
           <Text style={styles.menuText}>Add Pizza</Text>
         </TouchableOpacity>
       </View>
