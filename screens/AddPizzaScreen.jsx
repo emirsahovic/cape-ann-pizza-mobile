@@ -5,6 +5,7 @@ import * as yup from "yup";
 import { Picker } from "@react-native-picker/picker";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import apiService from "../service/apiService";
 
 const pizzaValidationSchema = yup.object().shape({
   name: yup.string().required("Required"),
@@ -20,7 +21,7 @@ const AddPizzaScreen = () => {
   const [category, setCategory] = useState("");
   const navigation = useNavigation();
 
-  const handleSubmit = (values, { resetForm }) => {
+  const handleSubmit = async (values, { resetForm }) => {
     const { description, name, picture, price } = values;
     const newData = {
       name,
@@ -30,7 +31,7 @@ const AddPizzaScreen = () => {
       category,
     };
 
-    console.log(newData);
+    const res = await apiService.post("/pizzaAdd", newData);
 
     resetForm();
   };
