@@ -1,4 +1,16 @@
-import { ActivityIndicator, Dimensions, FlatList, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  Dimensions,
+  FlatList,
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { FontAwesome, Entypo } from "@expo/vector-icons";
 
 import PizzaCard from "../components/PizzaCard";
@@ -83,9 +95,12 @@ const HomeScreen = () => {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 40 }}>
-      <TouchableOpacity style={{ alignSelf: "flex-end" }} onPress={() => navigation.openDrawer()}>
-        <FontAwesome size={35} color="#fff" name="bars" style={{ marginBottom: 30 }} />
-      </TouchableOpacity>
+      <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 35 }}>
+        <Image source={require("../assets/img/logo.png")} style={{ width: 40, height: 40 }} />
+        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+          <FontAwesome size={35} color="#fff" name="bars" />
+        </TouchableOpacity>
+      </View>
       <Text style={styles.text}>Find the world</Text>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Text style={styles.text}>best </Text>
