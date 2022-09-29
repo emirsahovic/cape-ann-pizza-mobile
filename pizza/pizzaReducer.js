@@ -12,6 +12,7 @@ export const pizzaReducer = (state, action) => {
   switch (action.type) {
     case ACTION_TYPES.GET_PIZZAS_REQUEST:
     case ACTION_TYPES.GET_PIZZA_REQUEST:
+    case ACTION_TYPES.DELETE_PIZZA_REQUEST:
       return {
         loading: true,
         error: false,
@@ -38,6 +39,11 @@ export const pizzaReducer = (state, action) => {
         loading: false,
         pizzas: [],
         pizza: {},
+      };
+    case ACTION_TYPES.DELETE_PIZZA_SUCCESS:
+      return {
+        ...state,
+        pizzas: state.pizzas.filter((res) => res.id !== action.payload),
       };
     default:
       return state;
