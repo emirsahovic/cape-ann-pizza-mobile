@@ -1,5 +1,5 @@
 import { ActivityIndicator, FlatList, Image, StyleSheet, Text, TouchableOpacity, View, Pressable, ScrollView } from "react-native";
-import { Feather, FontAwesome } from "@expo/vector-icons";
+import { Feather, FontAwesome, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 
 import apiService from "../service/apiService";
 import { useEffect, useState, useReducer } from "react";
@@ -18,6 +18,7 @@ const PizzaDetailScreen = () => {
   const navigation = useNavigation();
 
   const id = route.params.id;
+  let ingredientsArr;
 
   useEffect(() => {
     fetchPizza(id);
@@ -41,6 +42,10 @@ const PizzaDetailScreen = () => {
     );
   }
 
+  if (state.pizza?.ingredients !== "") {
+    ingredientsArr = state.pizza?.ingredients?.split(", ");
+  }
+
   const toggleReadMore = () => {
     setReadMore((current) => !current);
   };
@@ -57,8 +62,40 @@ const PizzaDetailScreen = () => {
             <FontAwesome size={35} color="#fff" name="bars" style={{ marginBottom: 30 }} />
           </TouchableOpacity>
           <View style={styles.infoContainer}>
-            <Text style={styles.pizzaHeading}>{state.pizza.name}</Text>
-            <Text style={styles.categoryText}>{state.pizza.category}</Text>
+            <View>
+              <Text style={styles.pizzaHeading}>{state.pizza.name}</Text>
+              <Text style={styles.categoryText}>{state.pizza.category}</Text>
+              <View style={{ flexDirection: "row", alignItems: "center", marginTop: 15 }}>
+                <Entypo name="star" size={28} color={`${state.pizza.rating >= 1 ? "#ffd600" : "#555"}`} />
+                <Entypo name="star" size={28} color={`${state.pizza.rating >= 2 ? "#ffd600" : "#555"}`} />
+                <Entypo name="star" size={28} color={`${state.pizza.rating >= 3 ? "#ffd600" : "#555"}`} />
+                <Entypo name="star" size={28} color={`${state.pizza.rating >= 4 ? "#ffd600" : "#555"}`} />
+                <Entypo name="star" size={28} color={`${state.pizza.rating >= 5 ? "#ffd600" : "#555"}`} />
+              </View>
+            </View>
+            <View>
+              {state.pizza &&
+                ingredientsArr &&
+                ingredientsArr.map((ingr, index) => (
+                  <View
+                    key={index}
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      color: "#fff",
+                      borderWidth: 1,
+                      borderColor: "#cd854d",
+                      borderRadius: 5,
+                      paddingVertical: 6,
+                      paddingHorizontal: 8,
+                      marginBottom: 5,
+                    }}
+                  >
+                    <MaterialCommunityIcons name="food-variant" size={16} color="#fff" style={{ marginRight: 7 }} />
+                    <Text style={{ color: "#fff" }}>{ingr.charAt(0).toUpperCase() + ingr.slice(1)}</Text>
+                  </View>
+                ))}
+            </View>
           </View>
           <View style={{ backgroundColor: "#0c0f14" }}></View>
           <View style={styles.descriptionSection}>
@@ -123,6 +160,9 @@ const styles = StyleSheet.create({
     paddingVertical: 35,
     marginTop: -70,
     borderRadius: 15,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   categoryText: {
     borderWidth: 2,
