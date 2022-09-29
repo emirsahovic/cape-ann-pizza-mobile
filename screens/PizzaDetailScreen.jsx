@@ -100,6 +100,7 @@ const PizzaDetailScreen = () => {
           <View style={{ backgroundColor: "#0c0f14" }}></View>
           <View style={styles.descriptionSection}>
             <Text style={styles.descHeading}>Description</Text>
+            {state.pizza?.description?.length < 200 && <Text style={styles.descText}>{state.pizza?.description}</Text>}
             {state.pizza?.description?.length > 200 && (
               <>
                 {readMore ? (
@@ -130,7 +131,7 @@ const PizzaDetailScreen = () => {
           <View style={styles.priceContainer}>
             <Text style={{ color: "#fff", fontSize: 25, fontWeight: "bold" }}>
               <Feather name="dollar-sign" color="#ed9753" size={25} />
-              {active === "S" ? state.pizza.price : active === "M" ? state.pizza.price * 1.25 : state.pizza.price * 1.5}
+              {active === "S" ? state.pizza.price : active === "M" ? Math.round(state.pizza.price * 1.25 * 100) / 100 : state.pizza.price * 1.5}
             </Text>
             <TouchableOpacity>
               <Text style={styles.button}>Buy Now</Text>
