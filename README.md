@@ -10,10 +10,10 @@
 
 # Pizza Details Screen
 <p align="center">
-<img src="https://user-images.githubusercontent.com/84568841/192821125-ee726dfd-75d8-4ef1-abbf-6cff143da9e3.png" />
+<img src="https://user-images.githubusercontent.com/84568841/193028960-5dba3d66-bd99-4c20-be66-97a655131b68.png" />
 </p>
 
 # Add Pizza Screen
 <p align="center">
-<img src="https://user-images.githubusercontent.com/84568841/192821384-5d970c64-e8d4-45f8-bbd1-41059fe53c08.png" />
+<img src="https://user-images.githubusercontent.com/84568841/193028453-3284bb36-4b32-40cc-82cd-d26f29fedf45.png" />
 </p>
