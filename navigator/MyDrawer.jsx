@@ -10,7 +10,11 @@ const Drawer = createDrawerNavigator();
 function MyDrawer() {
   return (
     <NavigationContainer>
-      <Drawer.Navigator useLegacyImplementation screenOptions={{ headerShown: false }} drawerContent={(props) => <CustomDrawerContent {...props} />}>
+      <Drawer.Navigator
+        useLegacyImplementation
+        screenOptions={{ headerShown: false, unmountOnBlur: true }}
+        drawerContent={(props) => <CustomDrawerContent {...props} />}
+      >
         <Drawer.Screen name="Home" component={HomeScreen} />
         <Drawer.Screen name="PizzaDetail" component={PizzaDetailScreen} />
         <Drawer.Screen name="AddPizza" component={AddPizzaScreen} />
