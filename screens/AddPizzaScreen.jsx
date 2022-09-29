@@ -93,7 +93,7 @@ const AddPizzaScreen = () => {
               <TextInput
                 name="description"
                 placeholder="Description"
-                style={[styles.textArea, { textAlignVertical: "top" }]}
+                style={[styles.textArea, { textAlignVertical: "top" }, { marginTop: 30 }]}
                 onChangeText={handleChange("description")}
                 onBlur={handleBlur("description")}
                 value={values.description}
@@ -105,7 +105,7 @@ const AddPizzaScreen = () => {
               <TextInput
                 name="ingredients"
                 placeholder="Ingredients"
-                style={styles.textInput}
+                style={[styles.textInput, { marginTop: 15 }]}
                 onChangeText={handleChange("ingredients")}
                 onBlur={handleBlur("ingredients")}
                 value={values.ingredients}
