@@ -29,9 +29,9 @@ const styles = StyleSheet.create({
     width: "90%",
   },
   imageRecommended: {
-    width: "50%",
-    height: 100,
-    resizeMode: "contain",
+    width: "40%",
+    height: 90,
+    resizeMode: "cover",
     borderRadius: 10,
   },
   textRecommended: {
