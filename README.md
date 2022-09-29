@@ -3,7 +3,7 @@
 <img src="https://user-images.githubusercontent.com/84568841/192819913-d99e8d88-2298-4922-9962-a279cf73cd4f.png" />
 </p>
 
-# Home Screen
+# Home Screen - No Results
 <p align="center">
 <img src="https://user-images.githubusercontent.com/84568841/192820326-6726d760-a9dc-4ed4-ae07-e6504d6229da.png" />
 </p>
