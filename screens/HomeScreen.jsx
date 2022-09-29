@@ -93,6 +93,14 @@ const HomeScreen = () => {
     );
   }
 
+  if (state.error) {
+    return (
+      <View style={styles.loading}>
+        <Text style={{ color: "#fff", fontSize: 26 }}>{state.message}</Text>
+      </View>
+    );
+  }
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 40 }}>
       <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 35 }}>
