@@ -7,7 +7,7 @@ Pizza mobile application allows users to view, delete, add and update pizzas tha
 - Git clone repository
 - Run these commands at the root of the project directory:
   -  <b>npm install</b> 
-  -  Run your Android Emulator
+  -  <b>Run your Android Emulator</b>
   -  <b>npm start</b>
   -  Press <b>a</b> to open an application on Android
 
