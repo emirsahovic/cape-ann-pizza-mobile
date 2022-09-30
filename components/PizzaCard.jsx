@@ -26,8 +26,14 @@ const PizzaCard = ({ item, index, lastIndex }) => {
         <AntDesign
           name="closecircle"
           size={24}
-          style={{ color: "red", position: "absolute", top: -1, right: -1 }}
+          style={{ color: "#fff", position: "absolute", top: -1, right: -1 }}
           onPress={() => dispatch(deletePizza(item.id))}
+        />
+        <Feather
+          name="edit"
+          size={24}
+          style={{ color: "#fff", position: "absolute", top: -1, left: -1 }}
+          onPress={() => navigation.navigate("AddPizza", { item })}
         />
         <Text style={styles.pizzaName}>{item.name}</Text>
         <View style={styles.priceContainer}>
