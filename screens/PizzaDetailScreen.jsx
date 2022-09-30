@@ -1,18 +1,18 @@
 import { ActivityIndicator, FlatList, Image, StyleSheet, Text, TouchableOpacity, View, Pressable, ScrollView } from "react-native";
 import { Feather, FontAwesome, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 
-import apiService from "../service/apiService";
-import { useEffect, useState, useReducer } from "react";
+import { useEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
-import { ACTION_TYPES } from "../pizza/pizzaActionTypes";
-import { INITIAL_STATE, pizzaReducer } from "../pizza/pizzaReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { getPizzaById } from "../redux/pizza/actions/actionCreators";
 
 const PizzaDetailScreen = () => {
   const [readMore, setReadMore] = useState(false);
   const [active, setActive] = useState("S");
 
-  const [state, dispatch] = useReducer(pizzaReducer, INITIAL_STATE);
+  const dispatch = useDispatch();
+  const { pizza, loading, error, message } = useSelector((state) => state.pizza);
 
   const route = useRoute();
   const navigation = useNavigation();
@@ -21,20 +21,10 @@ const PizzaDetailScreen = () => {
   let ingredientsArr;
 
   useEffect(() => {
-    fetchPizza(id);
-  }, [id]);
+    dispatch(getPizzaById(id));
+  }, [dispatch, id]);
 
-  const fetchPizza = async (id) => {
-    try {
-      dispatch({ type: ACTION_TYPES.GET_PIZZA_REQUEST });
-      const res = await apiService.get(`/pizza/${id}`);
-      dispatch({ type: ACTION_TYPES.GET_PIZZA_SUCCESS, payload: res.data });
-    } catch (error) {
-      dispatch({ type: ACTION_TYPES.GET_PIZZA_ERROR, payload: error.message });
-    }
-  };
-
-  if (state.loading) {
+  if (loading) {
     return (
       <View style={styles.loading}>
         <ActivityIndicator size="large" />
@@ -42,8 +32,16 @@ const PizzaDetailScreen = () => {
     );
   }
 
-  if (state.pizza?.ingredients !== "") {
-    ingredientsArr = state.pizza?.ingredients?.split(", ");
+  if (error) {
+    return (
+      <View style={styles.loading}>
+        <Text style={{ color: "#fff", fontSize: 26 }}>{message}</Text>
+      </View>
+    );
+  }
+
+  if (pizza?.ingredients !== "") {
+    ingredientsArr = pizza?.ingredients?.split(", ");
   }
 
   const toggleReadMore = () => {
@@ -52,9 +50,9 @@ const PizzaDetailScreen = () => {
 
   return (
     <>
-      {state.pizza && (
+      {pizza && (
         <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 30 }}>
-          <Image source={{ uri: state.pizza.picture }} style={styles.image} />
+          <Image source={{ uri: pizza.picture }} style={styles.image} />
           <TouchableOpacity onPress={() => navigation.goBack()} style={{ position: "absolute", top: 17, left: 5 }}>
             <Feather name="chevron-left" size={45} color="#fff" />
           </TouchableOpacity>
@@ -63,20 +61,19 @@ const PizzaDetailScreen = () => {
           </TouchableOpacity>
           <View style={styles.infoContainer}>
             <View>
-              <Text style={styles.pizzaHeading}>{state.pizza.name}</Text>
-              <Text style={styles.categoryText}>{state.pizza.category}</Text>
+              <Text style={styles.pizzaHeading}>{pizza.name}</Text>
+              <Text style={styles.categoryText}>{pizza.category}</Text>
               <View style={{ flexDirection: "row", alignItems: "center", marginTop: 15 }}>
-                <Entypo name="star" size={28} color={`${state.pizza.rating >= 1 ? "#ffd600" : "#555"}`} />
-                <Entypo name="star" size={28} color={`${state.pizza.rating >= 2 ? "#ffd600" : "#555"}`} />
-                <Entypo name="star" size={28} color={`${state.pizza.rating >= 3 ? "#ffd600" : "#555"}`} />
-                <Entypo name="star" size={28} color={`${state.pizza.rating >= 4 ? "#ffd600" : "#555"}`} />
-                <Entypo name="star" size={28} color={`${state.pizza.rating >= 5 ? "#ffd600" : "#555"}`} />
+                <Entypo name="star" size={28} color={`${pizza.rating >= 1 ? "#ffd600" : "#555"}`} />
+                <Entypo name="star" size={28} color={`${pizza.rating >= 2 ? "#ffd600" : "#555"}`} />
+                <Entypo name="star" size={28} color={`${pizza.rating >= 3 ? "#ffd600" : "#555"}`} />
+                <Entypo name="star" size={28} color={`${pizza.rating >= 4 ? "#ffd600" : "#555"}`} />
+                <Entypo name="star" size={28} color={`${pizza.rating >= 5 ? "#ffd600" : "#555"}`} />
               </View>
             </View>
             <View>
-              {state.pizza &&
-                ingredientsArr &&
-                ingredientsArr.map((ingr, index) => (
+              {pizza &&
+                ingredientsArr?.map((ingr, index) => (
                   <View
                     key={index}
                     style={{
@@ -100,13 +97,13 @@ const PizzaDetailScreen = () => {
           <View style={{ backgroundColor: "#0c0f14" }}></View>
           <View style={styles.descriptionSection}>
             <Text style={styles.descHeading}>Description</Text>
-            {state.pizza?.description?.length < 200 && <Text style={styles.descText}>{state.pizza?.description}</Text>}
-            {state.pizza?.description?.length > 200 && (
+            {pizza?.description?.length < 200 && <Text style={styles.descText}>{pizza?.description}</Text>}
+            {pizza?.description?.length > 200 && (
               <>
                 {readMore ? (
-                  <Text style={styles.descText}>{state.pizza?.description}</Text>
+                  <Text style={styles.descText}>{pizza?.description}</Text>
                 ) : (
-                  <Text style={styles.descText}>{state.pizza?.description?.slice(0, 100)}...</Text>
+                  <Text style={styles.descText}>{pizza?.description?.slice(0, 100)}...</Text>
                 )}
                 <TouchableOpacity onPress={toggleReadMore}>
                   <Text style={styles.readMore}>{readMore ? "Show Less" : "Read More"}</Text>
@@ -131,7 +128,7 @@ const PizzaDetailScreen = () => {
           <View style={styles.priceContainer}>
             <Text style={{ color: "#fff", fontSize: 25, fontWeight: "bold" }}>
               <Feather name="dollar-sign" color="#ed9753" size={25} />
-              {active === "S" ? state.pizza.price : active === "M" ? Math.round(state.pizza.price * 1.25 * 100) / 100 : state.pizza.price * 1.5}
+              {active === "S" ? pizza.price : active === "M" ? Math.round(pizza.price * 1.25 * 100) / 100 : pizza.price * 1.5}
             </Text>
             <TouchableOpacity>
               <Text style={styles.button}>Buy Now</Text>

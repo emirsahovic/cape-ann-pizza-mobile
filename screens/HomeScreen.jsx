@@ -12,80 +12,52 @@ import {
   View,
 } from "react-native";
 import { FontAwesome, Entypo } from "@expo/vector-icons";
-
 import PizzaCard from "../components/PizzaCard";
 import RecommendedCard from "../components/RecommendedCard";
 
-import apiService from "../service/apiService";
-import { useEffect, useState, useReducer } from "react";
+import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
-import { ACTION_TYPES } from "../pizza/pizzaActionTypes";
-import { INITIAL_STATE, pizzaReducer } from "../pizza/pizzaReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { getPizzas, getPizzasByCat, getPizzasBySearch } from "../redux/pizza/actions/actionCreators";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
+
+  const dispatch = useDispatch();
+  const { pizzas, loading, error, message, success } = useSelector((state) => state.pizza);
 
   const [active, setActive] = useState("All");
   const [name, setName] = useState("");
   const [pizzasClone, setPizzasClone] = useState([]);
 
-  const [state, dispatch] = useReducer(pizzaReducer, INITIAL_STATE);
-
   useEffect(() => {
-    fetchPizzas();
-  }, []);
-
-  const fetchPizzas = async () => {
-    try {
-      dispatch({ type: ACTION_TYPES.GET_PIZZAS_REQUEST });
-      const res = await apiService.get("/pizza");
-      dispatch({ type: ACTION_TYPES.GET_PIZZAS_SUCCESS, payload: res.data });
-      setPizzasClone(res.data);
-    } catch (error) {
-      dispatch({ type: ACTION_TYPES.GET_PIZZAS_ERROR, payload: error.message });
+    dispatch(getPizzas());
+    if (success) {
+      setPizzasClone(pizzas);
     }
-  };
-
-  const fetchPizzasByCat = async (cat) => {
-    try {
-      dispatch({ type: ACTION_TYPES.GET_PIZZAS_REQUEST });
-      const res = await apiService.get(`/pizzaByCategory/${cat}`);
-      dispatch({ type: ACTION_TYPES.GET_PIZZAS_SUCCESS, payload: res.data });
-    } catch (error) {
-      dispatch({ type: ACTION_TYPES.GET_PIZZAS_ERROR, payload: error.message });
-    }
-  };
+  }, [dispatch, success]);
 
   const handleCategory = (item) => {
     if (item === "All") {
       setActive(item);
-      fetchPizzas();
+      dispatch(getPizzas());
     } else {
       setActive(item);
-      fetchPizzasByCat(item);
+      dispatch(getPizzasByCat(item));
     }
   };
 
   const searchPizzaByName = async (name) => {
-    try {
-      if (name !== "") {
-        setName("");
-        dispatch({ type: ACTION_TYPES.GET_PIZZAS_REQUEST });
-        const res = await apiService.get(`/searchPizza/${name}`);
-        dispatch({ type: ACTION_TYPES.GET_PIZZAS_SUCCESS, payload: res.data });
-      } else {
-        setName("");
-        dispatch({ type: ACTION_TYPES.GET_PIZZAS_REQUEST });
-        const res = await apiService.get(`/pizza`);
-        dispatch({ type: ACTION_TYPES.GET_PIZZAS_SUCCESS, payload: res.data });
-      }
-    } catch (error) {
-      dispatch({ type: ACTION_TYPES.GET_PIZZAS_ERROR, payload: error.message });
+    setName("");
+    if (name !== "") {
+      dispatch(getPizzasBySearch(name));
+    } else {
+      dispatch(getPizzas());
     }
   };
 
-  if (state.loading) {
+  if (loading) {
     return (
       <View style={styles.loading}>
         <ActivityIndicator size="large" />
@@ -93,10 +65,10 @@ const HomeScreen = () => {
     );
   }
 
-  if (state.error) {
+  if (error) {
     return (
       <View style={styles.loading}>
-        <Text style={{ color: "#fff", fontSize: 26 }}>{state.message}</Text>
+        <Text style={{ color: "#fff", fontSize: 26 }}>{message}</Text>
       </View>
     );
   }
@@ -127,7 +99,7 @@ const HomeScreen = () => {
         <FontAwesome name="search" size={20} color="#555759" />
       </View>
       <View style={{ marginTop: 35, marginBottom: 20 }}>
-        {state.pizzas && (
+        {pizzas && (
           <FlatList
             horizontal
             keyExtractor={(item, index) => index}
@@ -141,20 +113,20 @@ const HomeScreen = () => {
         )}
       </View>
       <View>
-        {state.pizzas && (
+        {pizzas && (
           <FlatList
             showsHorizontalScrollIndicator={false}
             horizontal
             keyExtractor={(item) => item.id}
-            data={state.pizzas}
+            data={pizzas}
             renderItem={({ item, index }) => {
-              return <PizzaCard item={item} lastIndex={state.pizzas.indexOf(state.pizzas[state.pizzas.length - 1])} index={index} />;
+              return <PizzaCard item={item} lastIndex={pizzas.indexOf(pizzas[pizzas.length - 1])} index={index} />;
             }}
           />
         )}
       </View>
       <View style={{ flex: 1 }}>
-        {state.pizzas.length > 0 ? (
+        {pizzas?.length > 0 ? (
           <Text style={styles.recommendedHeading}>Recommended</Text>
         ) : (
           <View style={{ alignItems: "center", marginTop: 30 }}>
@@ -162,7 +134,7 @@ const HomeScreen = () => {
             <Text style={{ marginTop: 15, fontSize: 18, color: "#fff" }}>Sorry, we couldn't find any results...</Text>
           </View>
         )}
-        {state.pizzas.length > 0 && (
+        {pizzas?.length > 0 && (
           <ScrollView horizontal showsHorizontalScrollIndicator={false} scrollEnabled={false}>
             <FlatList
               style={{ width: Dimensions.get("window").width }}

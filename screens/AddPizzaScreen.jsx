@@ -52,7 +52,7 @@ const AddPizzaScreen = () => {
       <TouchableOpacity style={{ position: "absolute", top: 20, right: 12 }} onPress={() => navigation.openDrawer()}>
         <FontAwesome size={35} color="#fff" name="bars" style={{ marginBottom: 30 }} />
       </TouchableOpacity>
-      <ScrollView style={styles.formContainer} contentContainerStyle={{ paddingBottom: 60 }}>
+      <ScrollView style={styles.formContainer} contentContainerStyle={{ paddingBottom: 35 }}>
         <Formik
           validationSchema={pizzaValidationSchema}
           initialValues={{ name: "", price: "", picture: "", description: "", ingredients: "", rating: "" }}
@@ -63,7 +63,7 @@ const AddPizzaScreen = () => {
               <TextInput
                 name="name"
                 placeholder="Name"
-                style={styles.textInput}
+                style={[styles.textInput, { marginTop: 10 }]}
                 onChangeText={handleChange("name")}
                 onBlur={handleBlur("name")}
                 value={values.name}
@@ -93,7 +93,7 @@ const AddPizzaScreen = () => {
               <TextInput
                 name="description"
                 placeholder="Description"
-                style={[styles.textArea, { textAlignVertical: "top" }, { marginTop: 30 }]}
+                style={[styles.textArea, { textAlignVertical: "top" }]}
                 onChangeText={handleChange("description")}
                 onBlur={handleBlur("description")}
                 value={values.description}
@@ -132,7 +132,7 @@ const AddPizzaScreen = () => {
                 <Picker.Item label="Veg" value="Veg" style={{ color: "#bbb", backgroundColor: "#272629" }} />
                 <Picker.Item label="Non-Veg" value="Non-Veg" style={{ color: "#bbb", backgroundColor: "#272629" }} />
               </Picker>
-              <Text style={{ width: "100%", backgroundColor: "#888", height: 1, marginTop: -4 }}></Text>
+              <Text style={{ width: "100%", backgroundColor: "#555", height: 1, marginTop: -4, marginLeft: 3 }}></Text>
               <TouchableOpacity onPress={handleSubmit}>
                 <Text style={styles.button}>Submit</Text>
               </TouchableOpacity>
@@ -167,16 +167,18 @@ const styles = StyleSheet.create({
   },
   textInput: {
     fontSize: 14,
-    borderBottomWidth: 1,
-    borderBottomColor: "#888",
-    padding: 6,
+    borderWidth: 1,
+    borderColor: "#555",
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 7,
     marginTop: 23,
     color: "#fff",
   },
   textArea: {
     fontSize: 16,
     borderWidth: 1,
-    borderColor: "#888",
+    borderColor: "#555",
     padding: 10,
     borderRadius: 10,
     marginTop: 18,
@@ -184,8 +186,9 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: "red",
-    marginTop: 6,
+    marginTop: 4,
     paddingLeft: 3,
+    fontSize: 12.5,
   },
   button: {
     marginTop: 35,

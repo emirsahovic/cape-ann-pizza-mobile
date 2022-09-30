@@ -2,27 +2,16 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, Pressable, ActivityInd
 import { FontAwesome, Feather, AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-import { ACTION_TYPES } from "../pizza/pizzaActionTypes";
-import { INITIAL_STATE, pizzaReducer } from "../pizza/pizzaReducer";
-import { useReducer } from "react";
-import apiService from "../service/apiService";
+import { useDispatch, useSelector } from "react-redux";
+import { deletePizza } from "../redux/pizza/actions/actionCreators";
 
 const PizzaCard = ({ item, index, lastIndex }) => {
   const navigation = useNavigation();
 
-  const [state, dispatch] = useReducer(pizzaReducer, INITIAL_STATE);
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.pizza);
 
-  const handleDelete = async (id) => {
-    try {
-      dispatch({ type: ACTION_TYPES.DELETE_PIZZA_REQUEST });
-      const res = await apiService.delete(`/pizza/${id}`);
-      dispatch({ type: ACTION_TYPES.DELETE_PIZZA_SUCCESS, payload: res.data.id });
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
-  if (state.loading) {
+  if (loading) {
     return (
       <View style={styles.loading}>
         <ActivityIndicator size="large" />
@@ -36,9 +25,9 @@ const PizzaCard = ({ item, index, lastIndex }) => {
         <Image style={styles.image} source={{ uri: item.picture }} />
         <AntDesign
           name="closecircle"
-          size={20}
-          style={{ color: "red", position: "absolute", top: 5, right: 5 }}
-          onPress={() => handleDelete(item.id)}
+          size={24}
+          style={{ color: "red", position: "absolute", top: -1, right: -1 }}
+          onPress={() => dispatch(deletePizza(item.id))}
         />
         <Text style={styles.pizzaName}>{item.name}</Text>
         <View style={styles.priceContainer}>
@@ -78,7 +67,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "100%",
-    height: 120,
+    height: 135,
     resizeMode: "cover",
     borderRadius: 10,
   },
