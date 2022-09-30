@@ -73,6 +73,24 @@ export const getPizzasBySearch = (name) => async (dispatch) => {
   }
 };
 
+export const addPizza = (newData) => async (dispatch) => {
+  try {
+    dispatch({ type: ACTION_TYPES.ADD_PIZZA_REQUEST });
+
+    const data = await pizzaService.addPizza(newData);
+
+    dispatch({
+      type: ACTION_TYPES.ADD_PIZZA_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ACTION_TYPES.ADD_PIZZA_ERROR,
+      payload: error.message,
+    });
+  }
+};
+
 export const deletePizza = (id) => async (dispatch) => {
   try {
     dispatch({ type: ACTION_TYPES.DELETE_PIZZA_REQUEST });

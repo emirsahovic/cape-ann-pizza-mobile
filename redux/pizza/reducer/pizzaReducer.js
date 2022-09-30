@@ -14,6 +14,7 @@ export const pizzaReducer = (state = INITIAL_STATE, action) => {
     case ACTION_TYPES.GET_PIZZAS_REQUEST:
     case ACTION_TYPES.GET_PIZZA_REQUEST:
     case ACTION_TYPES.DELETE_PIZZA_REQUEST:
+    case ACTION_TYPES.ADD_PIZZA_REQUEST:
       return {
         ...state,
         loading: true,
@@ -34,6 +35,7 @@ export const pizzaReducer = (state = INITIAL_STATE, action) => {
     case ACTION_TYPES.GET_PIZZAS_ERROR:
     case ACTION_TYPES.GET_PIZZA_ERROR:
     case ACTION_TYPES.DELETE_PIZZA_ERROR:
+    case ACTION_TYPES.ADD_PIZZA_ERROR:
       return {
         message: action.payload,
         error: true,
@@ -47,6 +49,12 @@ export const pizzaReducer = (state = INITIAL_STATE, action) => {
         ...state,
         loading: false,
         pizzas: state.pizzas.filter((res) => res.id !== action.payload),
+      };
+    case ACTION_TYPES.ADD_PIZZA_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        pizzas: [...state.pizzas, action.payload],
       };
     default:
       return state;
