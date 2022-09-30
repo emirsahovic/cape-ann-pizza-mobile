@@ -1,11 +1,14 @@
-import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Feather, FontAwesome } from "@expo/vector-icons";
+import { Picker } from "@react-native-picker/picker";
 import { Formik } from "formik";
 import * as yup from "yup";
-import { Picker } from "@react-native-picker/picker";
+
 import { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
-import apiService from "../service/apiService";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { addPizza } from "../redux/pizza/actions/actionCreators";
+import pizzaService from "../redux/pizza/service/pizzaService";
 
 const pizzaValidationSchema = yup.object().shape({
   name: yup.string().required("Required"),
@@ -20,8 +23,14 @@ const pizzaValidationSchema = yup.object().shape({
 });
 
 const AddPizzaScreen = () => {
-  const [category, setCategory] = useState("");
   const navigation = useNavigation();
+  const route = useRoute();
+  const item = route.params?.item;
+
+  const [category, setCategory] = useState(item ? item.category : "");
+
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector((state) => state.pizza);
 
   const handleSubmit = async (values, { resetForm }) => {
     const { description, name, picture, price, ingredients, rating } = values;
@@ -35,10 +44,32 @@ const AddPizzaScreen = () => {
       rating: parseInt(rating),
     };
 
-    await apiService.post("/pizza", newData);
-
-    resetForm();
+    if (item) {
+      await pizzaService.updatePizza(item.id, newData);
+      navigation.navigate("Home");
+      resetForm();
+    } else {
+      dispatch(addPizza(newData));
+      navigation.navigate("Home");
+      resetForm();
+    }
   };
+
+  if (loading) {
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.loading}>
+        <Text style={{ color: "#fff", fontSize: 26 }}>{message}</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -55,7 +86,14 @@ const AddPizzaScreen = () => {
       <ScrollView style={styles.formContainer} contentContainerStyle={{ paddingBottom: 35 }}>
         <Formik
           validationSchema={pizzaValidationSchema}
-          initialValues={{ name: "", price: "", picture: "", description: "", ingredients: "", rating: "" }}
+          initialValues={{
+            name: item ? item.name : "",
+            price: item ? item.price.toString() : "",
+            picture: item ? item.picture : "",
+            description: item ? item.description : "",
+            ingredients: item ? item.ingredients : "",
+            rating: item ? item.rating.toString() : "",
+          }}
           onSubmit={handleSubmit}
         >
           {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isValid }) => (
@@ -126,7 +164,7 @@ const AddPizzaScreen = () => {
               <Picker
                 mode="dropdown"
                 dropdownIconColor="#fff"
-                selectedValue={category}
+                selectedValue={item ? item.category : category}
                 onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}
               >
                 <Picker.Item label="Veg" value="Veg" style={{ color: "#bbb", backgroundColor: "#272629" }} />
@@ -201,5 +239,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
     textTransform: "uppercase",
+  },
+  loading: {
+    backgroundColor: "#272629",
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
