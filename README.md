@@ -6,7 +6,7 @@ Pizza mobile application allows users to view, delete, add and update pizzas tha
 - Install Android Studio and create Virtual Device (Android Emulator)
 - Git clone repository
 - Run these commands at the root of the project directory:
-  -  <b>npm install</b> 
+  -  <b>npm install --legacy-peer-deps</b> 
   -  <b>Run your Android Emulator</b>
   -  <b>npm start</b>
   -  Press <b>a</b> to open an application on Android
