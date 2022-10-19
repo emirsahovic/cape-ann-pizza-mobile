@@ -5,7 +5,7 @@ Pizza mobile application allows users to order available pizzas. There are 3 typ
 # How To Run
 - Install Android Studio and create Virtual Device (Android Emulator)
 - Git clone repository
-- Run these commands at the root of the project directory:
+- Run these commands in terminal/shell:
   -  <b>npm install --legacy-peer-deps</b> 
   -  <b>Run your Android Emulator</b>
   -  <b>npm start</b>
