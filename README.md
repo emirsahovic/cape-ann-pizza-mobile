@@ -1,5 +1,5 @@
 # Pizza Mobile App
-Pizza mobile application allows users to view, delete, add and update pizzas that are available for ordering. This application is built as a starting point for Cape Ann Enterprises interns in Zenica using React Native (Expo) and Redux. <br> <br>
+Pizza mobile application allows users to view, delete, add and update pizzas that are available for ordering. There are 3 types of users (admin, standard user and guest) who have different permissions. This application is built as a starting point for Cape Ann Enterprises interns in Zenica using React Native (Expo) and Redux. <br> <br>
 <a href="https://github.com/hamza-starcevic/CapeAnnPizzaBackend">Backend</a> is built using Golang and MySQL database.
 
 # How To Run
@@ -57,7 +57,7 @@ Pizza mobile application allows users to view, delete, add and update pizzas tha
 <img height="450" src="https://user-images.githubusercontent.com/84568841/196728910-a040e4a7-90a4-4710-993c-f945831fa0da.png" />
 </p>
 
-## And and Edit User
+## Add and Edit User
 <p float="left" align="middle">
 <img height="450" src="https://user-images.githubusercontent.com/84568841/196729396-bace85aa-a7d6-4d25-879f-63565d3a982b.png" />
 &nbsp;
