@@ -14,14 +14,14 @@ const PizzaDetailScreen = () => {
   const dispatch = useDispatch();
   const { pizza, loading, error, message } = useSelector((state) => state.pizza);
 
-  const route = useRoute();
+  const route = useRoute(); // useRoute hook for getting route parameter which will be used to get pizza with id that is sent as route parameter
   const navigation = useNavigation();
 
-  const id = route.params.id;
+  const id = route.params.id; // Getting id that will be used to get pizza
   let ingredientsArr;
 
   useEffect(() => {
-    dispatch(getPizzaById(id));
+    dispatch(getPizzaById(id)); // Dispatch getPizzaById action to get a particural pizza
   }, [dispatch, id]);
 
   if (loading) {
@@ -41,6 +41,7 @@ const PizzaDetailScreen = () => {
   }
 
   if (pizza?.ingredients !== "") {
+    // Split received ingredients to the array so you can map through array and display each ingredient
     ingredientsArr = pizza?.ingredients?.split(", ");
   }
 

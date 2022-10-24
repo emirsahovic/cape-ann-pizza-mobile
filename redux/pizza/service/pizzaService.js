@@ -1,5 +1,8 @@
 import apiService from "../../../service/apiService";
 
+// Sending requests to the backend using created apiService (axios instance)
+// Methods below are used in actionCreators.js file for dispatching actions
+
 const getPizzas = async () => {
   const { data } = await apiService.get("/pizza");
   return data;

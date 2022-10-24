@@ -1,6 +1,7 @@
 import { View, TouchableOpacity, StyleSheet, Text, Image } from "react-native";
 import { FontAwesome, AntDesign } from "@expo/vector-icons";
 
+// Custom navigation menu
 function CustomDrawerContent({ navigation }) {
   return (
     <View style={{ flex: 1, backgroundColor: "#222" }}>

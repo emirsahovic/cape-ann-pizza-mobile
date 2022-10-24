@@ -1,11 +1,12 @@
 import { useNavigation } from "@react-navigation/native";
-import { StyleSheet, Text, View, Image, Pressable, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 
 const RecommendedCard = ({ item }) => {
   const navigation = useNavigation();
 
   return (
     <View style={styles.recommendedCard}>
+      {/* Navigate to the pizza detail screen if you press recommended card */}
       <TouchableOpacity onPress={() => navigation.navigate("PizzaDetail", { id: item.id })} style={{ flexDirection: "row", alignItems: "center" }}>
         <Image style={styles.imageRecommended} source={{ uri: item.picture }} />
         <View style={{ marginLeft: 20 }}>

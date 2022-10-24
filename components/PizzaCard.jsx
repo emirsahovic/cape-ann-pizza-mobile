@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, Pressable, ActivityIndicator } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity, ActivityIndicator } from "react-native";
 import { FontAwesome, Feather, AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
@@ -9,9 +9,10 @@ const PizzaCard = ({ item, index, lastIndex }) => {
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
-  const { loading } = useSelector((state) => state.pizza);
+  const { loading } = useSelector((state) => state.pizza); // Get loading state from redux store to check if data is loading
 
   if (loading) {
+    // If data is loading, show loading spinner (ActivityIndicator)
     return (
       <View style={styles.loading}>
         <ActivityIndicator size="large" />
@@ -20,6 +21,7 @@ const PizzaCard = ({ item, index, lastIndex }) => {
   }
 
   return (
+    // Navigate to the pizza detail screen if you press pizza card
     <TouchableOpacity onPress={() => navigation.navigate("PizzaDetail", { id: item.id })}>
       <View style={[styles.pizzaCard, index === lastIndex ? { marginRight: 0 } : { marginRight: 20 }]}>
         <Image style={styles.image} source={{ uri: item.picture }} />
@@ -27,7 +29,7 @@ const PizzaCard = ({ item, index, lastIndex }) => {
           name="closecircle"
           size={24}
           style={{ color: "#fff", position: "absolute", top: -1, right: -1 }}
-          onPress={() => dispatch(deletePizza(item.id))}
+          onPress={() => dispatch(deletePizza(item.id))} // Dispatch delete action and delete that pizza if you press close icon on the pizza card
         />
         <Feather
           name="edit"

@@ -25,7 +25,7 @@ const pizzaValidationSchema = yup.object().shape({
 const AddPizzaScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const item = route.params?.item;
+  const item = route.params?.item; // Route parameter which contains pizza details and is sent when you press an update icon on pizza card
 
   const [category, setCategory] = useState(item ? item.category : "");
 
@@ -33,7 +33,7 @@ const AddPizzaScreen = () => {
   const { loading, error } = useSelector((state) => state.pizza);
 
   const handleSubmit = async (values, { resetForm }) => {
-    const { description, name, picture, price, ingredients, rating } = values;
+    const { description, name, picture, price, ingredients, rating } = values; // Getting entered values
     const newData = {
       name,
       price: parseFloat(price),
@@ -45,10 +45,12 @@ const AddPizzaScreen = () => {
     };
 
     if (item) {
+      // If there is an item that means you previously pressed an update icon, so you will send update request with old or modified data
       await pizzaService.updatePizza(item.id, newData);
       navigation.navigate("Home");
       resetForm();
     } else {
+      // Else you will add new pizza
       dispatch(addPizza(newData));
       navigation.navigate("Home");
       resetForm();

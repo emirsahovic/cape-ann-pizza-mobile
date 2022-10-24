@@ -1,3 +1,4 @@
+// Action types constants which you use for creating actions (actionCreators.js file)
 export const ACTION_TYPES = {
   GET_PIZZAS_REQUEST: "GET_PIZZAS_REQUEST",
   GET_PIZZAS_SUCCESS: "GET_PIZZAS_SUCCESS",

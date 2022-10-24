@@ -3,16 +3,18 @@ import pizzaService from "../service/pizzaService";
 
 export const getPizzas = () => async (dispatch) => {
   try {
-    dispatch({ type: ACTION_TYPES.GET_PIZZAS_REQUEST });
+    dispatch({ type: ACTION_TYPES.GET_PIZZAS_REQUEST }); // Dispatch this action if data is loading, so you can show loading spinner in the component where you are using that data
 
-    const data = await pizzaService.getPizzas();
+    const data = await pizzaService.getPizzas(); // Store response data that you received from the backend to data variable using getPizzas method from the created pizzaService for sending requests
 
     dispatch({
+      // Dispatch this action if data is successfully received from the backend (there is no error) and send payload (your data) to the pizza reducer so you can modify inital state
       type: ACTION_TYPES.GET_PIZZAS_SUCCESS,
       payload: data,
     });
   } catch (error) {
     dispatch({
+      // Dispatch this action if there is an error while fetching data from the backend and send payload (error message) to the pizza reducer so you can modify inital state
       type: ACTION_TYPES.GET_PIZZAS_ERROR,
       payload: error.message,
     });

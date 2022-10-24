@@ -7,6 +7,7 @@ import AddPizzaScreen from "../screens/AddPizzaScreen";
 
 const Drawer = createDrawerNavigator();
 
+// Navigation container for navigating between application screens
 function MyDrawer() {
   return (
     <NavigationContainer>

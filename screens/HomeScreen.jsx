@@ -22,27 +22,29 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPizzas, getPizzasByCat, getPizzasBySearch } from "../redux/pizza/actions/actionCreators";
 
 const HomeScreen = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation(); // useNavigation hook for navigating between screens
 
-  const dispatch = useDispatch();
-  const { pizzas, loading, error, message, success } = useSelector((state) => state.pizza);
+  const dispatch = useDispatch(); // Using useDispatch hook you can dispatch actions to your initial state
+  const { pizzas, loading, error, message, success } = useSelector((state) => state.pizza); // Get states from the redux store using useSelector hook
 
   const [active, setActive] = useState("All");
   const [name, setName] = useState("");
   const [pizzasClone, setPizzasClone] = useState([]);
 
   useEffect(() => {
-    dispatch(getPizzas());
+    dispatch(getPizzas()); // Dispatch getPizzas() action to populate your "pizzas" array that you are importing from redux store using useSelector
     if (success) {
-      setPizzasClone(pizzas);
+      setPizzasClone(pizzas); // Pizzas for recommended section
     }
   }, [dispatch, success]);
 
   const handleCategory = (item) => {
+    // If selected category is "All", get all pizzas
     if (item === "All") {
-      setActive(item);
       dispatch(getPizzas());
+      setActive(item);
     } else {
+      // If selected category is "Veg" or "Non Veg", get pizzas that are in that category
       setActive(item);
       dispatch(getPizzasByCat(item));
     }
@@ -51,13 +53,16 @@ const HomeScreen = () => {
   const searchPizzaByName = async (name) => {
     setName("");
     if (name !== "") {
+      // Get pizzas whose name contains entered value
       dispatch(getPizzasBySearch(name));
     } else {
+      // If nothing is entered in the search input get all pizzas
       dispatch(getPizzas());
     }
   };
 
   if (loading) {
+    // If data is loading, show loading spinner (ActivityIndicator)
     return (
       <View style={styles.loading}>
         <ActivityIndicator size="large" />
@@ -66,6 +71,7 @@ const HomeScreen = () => {
   }
 
   if (error) {
+    // If there is an error, show an error message
     return (
       <View style={styles.loading}>
         <Text style={{ color: "#fff", fontSize: 26 }}>{message}</Text>
